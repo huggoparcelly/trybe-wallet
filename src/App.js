@@ -1,13 +1,14 @@
 import React from 'react';
 import { Route } from 'react-router';
 import Login from './pages/Login';
+import Wallet from './pages/Wallet';
 
 class App extends React.Component {
   render() {
-
     return (
       <div>
-        <Route path='/' component={ Login } />
+        <Route exact path="/" component={ Login } />
+        <Route path="/carteira" component={ Wallet } />
       </div>
     );
   }
