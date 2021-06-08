@@ -16,23 +16,12 @@ class Login extends React.Component {
     };
   }
 
-  // validateEmail = () => {
-  //   const { email } = this.state;
-  //   const validate = /^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,4})$/;
-  //   document.getElementById('btn-enter').disabled = true;
-  //   if (email.match(validate)) {
-  //     document.getElementById('btn-enter').disabled = false;
-  //   }
-  // }
-
   render() {
     const { email, password, passwordLength } = this.state;
     const { emailValue } = this.props;
     const emailValidate = (
       /^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,4})$/
     );
-    // capturar o botão
-    // console.log(getButton);
     const disabled = (password.length < passwordLength) || (!email.match(emailValidate));
     return (
       <form>
