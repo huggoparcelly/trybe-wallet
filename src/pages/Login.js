@@ -40,15 +40,15 @@ class Login extends React.Component {
           data-testid="password-input"
           onChange={ (e) => this.setState({ password: e.target.value }) }
         />
-        <button
-          type="submit"
-          disabled={ disabled }
-          onClick={ () => emailValue({ email }) }
-        >
-          <Link to="/carteira">
+        <Link to="/carteira">
+          <button
+            type="submit"
+            disabled={ disabled }
+            onClick={ () => emailValue({ email }) }
+          >
             Entrar
-          </Link>
-        </button>
+          </button>
+        </Link>
       </form>
     );
   }
