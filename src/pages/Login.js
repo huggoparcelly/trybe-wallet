@@ -8,9 +8,11 @@ import { userAction } from '../actions';
 class Login extends React.Component {
   constructor(props) {
     super(props);
+    const PASSWORD_MIN = 6;
     this.state = {
       email: '',
       password: '',
+      passwordLength: PASSWORD_MIN,
     };
   }
 
@@ -24,13 +26,16 @@ class Login extends React.Component {
   // }
 
   render() {
-    const { email, password } = this.state;
+    const { email, password, passwordLength } = this.state;
     const { emailValue } = this.props;
-    // const PASSWORD_MIN = 6;
-    // const emailValidate = /^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,4})$/;
+    const emailValidate = (
+      /^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,4})$/
+    );
     // capturar o botão
+    // console.log(getButton);
+    const disabled = (password.length < passwordLength) || (!email.match(emailValidate));
     return (
-      <div>
+      <form>
         <input
           type="email"
           placeholder="Email"
@@ -47,15 +52,15 @@ class Login extends React.Component {
           onChange={ (e) => this.setState({ password: e.target.value }) }
         />
         <button
-          type="button"
+          type="submit"
+          disabled={ disabled }
           onClick={ () => emailValue({ email }) }
         >
           <Link to="/carteira">
             Entrar
           </Link>
         </button>
-      </div>
-
+      </form>
     );
   }
 }
