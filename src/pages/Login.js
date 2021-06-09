@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { userAction } from '../actions';
+import { fetchAPI, userAction } from '../actions';
 
 class Login extends React.Component {
   constructor(props) {
@@ -18,7 +18,7 @@ class Login extends React.Component {
 
   render() {
     const { email, password, passwordLength } = this.state;
-    const { emailValue } = this.props;
+    const { emailValue, getCoins } = this.props;
     const emailValidate = (
       /^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,4})$/
     );
@@ -44,7 +44,10 @@ class Login extends React.Component {
           <button
             type="submit"
             disabled={ disabled }
-            onClick={ () => emailValue({ email }) }
+            onClick={ () => {
+              emailValue({ email });
+              getCoins();
+            } }
           >
             Entrar
           </button>
@@ -56,10 +59,12 @@ class Login extends React.Component {
 
 const mapDispatchToProps = (dispatch) => ({
   emailValue: (email) => (dispatch(userAction(email))),
+  getCoins: () => dispatch(fetchAPI()),
 });
 
 Login.propTypes = {
   emailValue: PropTypes.func.isRequired,
+  getCoins: PropTypes.func.isRequired,
 };
 
 export default connect(null, mapDispatchToProps)(Login);
