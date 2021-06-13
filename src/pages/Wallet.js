@@ -25,20 +25,12 @@ class Wallet extends React.Component {
     const { getExpenses } = this.props;
     let count = 0;
     getExpenses.forEach((expense) => {
-      count += ((expense.value) * expense.exchangeRates[expense.currency].ask);
+      count += (expense.value * expense.exchangeRates[expense.currency].ask);
     });
     return (
       <header>
-        <span data-testid="email-field">
-          Email:
-          {' '}
-          { email }
-        </span>
-        <p data-testid="total-field">
-          Total:
-          {' '}
-          { count }
-        </p>
+        <span data-testid="email-field">{ `Email: ${email}` }</span>
+        <p data-testid="total-field">{ `Total: ${Number(count).toFixed(2)}` }</p>
         <p data-testid="header-currency-field">BRL</p>
       </header>);
   }
@@ -88,9 +80,7 @@ class Wallet extends React.Component {
           onChange={ (e) => this.handleChange(e) }
         >
           {currencies.map((coin) => (
-            <option value={ coin } key={ coin }>
-              {coin}
-            </option>
+            <option value={ coin } key={ coin }>{coin}</option>
           ))}
         </select>
       </label>
@@ -144,14 +134,54 @@ class Wallet extends React.Component {
       <button
         type="button"
         onClick={ () => {
-          addExpense(
-            { id, value, description, currency, method, tag },
-          );
+          addExpense({ id, value, description, currency, method, tag });
           this.countId();
         } }
       >
         Adicionar despesa
       </button>
+    );
+  }
+
+  getTable() {
+    const { getExpenses } = this.props;
+    return (
+      <table>
+        <thead>
+          <tr>
+            <th>Descrição</th>
+            <th>Tag</th>
+            <th>Método de pagamento</th>
+            <th>Valor</th>
+            <th>Moeda</th>
+            <th>Câmbio utilizado</th>
+            <th>Valor convertido</th>
+            <th>Moeda de conversão</th>
+            <th>Editar/Excluir</th>
+          </tr>
+        </thead>
+        <tbody>
+          { getExpenses.map((expense) => (
+            <tr key={ expense.id }>
+              <td key={ expense.description }>{expense.description}</td>
+              <td key={ expense.tag }>{expense.tag}</td>
+              <td key={ expense.method }>{expense.method}</td>
+              <td key={ expense.value }>{expense.value}</td>
+              <td key={ expense.currency }>
+                { expense.exchangeRates[expense.currency].name.split('/')[0] }
+              </td>
+              <td key="Price">
+                { Number(expense.exchangeRates[expense.currency].ask).toFixed(2) }
+              </td>
+              <td key="converted value">
+                { Number((expense.value)
+                  * (expense.exchangeRates[expense.currency].ask)).toFixed(2)}
+              </td>
+              <td key="BRL">Real</td>
+            </tr>
+          )) }
+        </tbody>
+      </table>
     );
   }
 
@@ -177,8 +207,9 @@ class Wallet extends React.Component {
           {this.getCoins()}
           {this.getPayment()}
           {this.getTag()}
+          {this.getBtn()}
         </form>
-        {this.getBtn()}
+        {this.getTable()}
       </>
     );
   }
